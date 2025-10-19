@@ -9,12 +9,14 @@ const snakeColor = 'lightpink';
 const snakeBorder = 'purple';
 const foodColor = 'cyan';
 const unitSize = 25;
+const coinText = document.querySelector('#coinText');
 let running = false;
 let xVelocity = unitSize;
 let yVelocity = 0;
 let foodX;
 let foodY;
 let score = 0;
+let coins = 0;
 let snake = [
     {x:unitSize*4, y:0},
     {x:unitSize*3, y:0},
@@ -31,6 +33,7 @@ gameStart();
 function gameStart(){
     running = true;
     scoreText.textContent = score;
+    coinText.textContent = coins;
     createFood();
     drawFood();
     nextTick();
@@ -148,7 +151,23 @@ function displayGameOver(){
     ctx.textAlign = "center";
     ctx.fillText("Game Over!", gameWidth / 2, gameHeight / 2);
     running = false;
+
+    const oldCoins = coins;
+    coins += score;
+    animateCoins(oldCoins, coins);
 };
+function animateCoins(startValue, endValue){
+    let currentCoin = startValue;
+
+    const coinInterval = setInterval (()=>{
+        currentCoin += 1; 
+        coinText.textContent = currentCoin;
+
+        if(currentCoin >= endValue){
+            clearInterval(coinInterval);
+        }
+}, 200);
+}
 function resetGame(){
     score = 0;
     xVelocity = unitSize;
