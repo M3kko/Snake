@@ -154,7 +154,9 @@ function displayGameOver(){
 
     const oldCoins = coins;
     coins += score;
-    animateCoins(oldCoins, coins);
+    if (score > 0){
+        animateCoins(oldCoins, coins);
+    }
 };
 function animateCoins(startValue, endValue){
     let currentCoin = startValue;
