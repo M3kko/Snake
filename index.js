@@ -13,12 +13,24 @@ const coinText = document.querySelector('#coinText');
 const shopBtn = document.querySelector('#shopBtn');
 const shopModal = document.querySelector('#shopModal');
 const closeShopBtn = document.querySelector('#closeShopBtn');
+const snakeColors = [
+    {name: 'default pink', color: 'lightpink', price: 0, owned: true},
+    {name: 'red', color: 'red', price: 5, owned: false},
+    {name: 'blue', color: 'blue', price: 5, owned: false},
+    {name: 'yellow', color: 'yellow', price: 5, owned: false},
+    {name: 'royal purple', color: 'purple', price: 10, owned: false},
+    {name: 'navy blue', color: 'navy', price: 10, owned: false},
+    {name: 'white', color: 'white', price: 15, owned: false},
+    {name: 'black', color: 'black', price: 15, owned: false},
+    {name: 'ghost', color: 'rgba(255,255,255,0.5)', price: 50, owned: false},
+]
 let running = false;
 let xVelocity = unitSize;
 let yVelocity = 0;
 let foodX;
 let foodY;
 let score = 0;
+let coinsAnimating = false;
 let coins = 0;
 let snake = [
     {x:unitSize*4, y:0},
@@ -27,6 +39,8 @@ let snake = [
     {x:unitSize, y:0},
     {x:0, y:0},
 ];
+let currentSnakecolor = snakeColors[0];
+
 
 window.addEventListener("keydown", changeDirection);
 resetBtn.addEventListener("click", resetGame)
@@ -160,6 +174,10 @@ function displayGameOver(){
     const oldCoins = coins;
     coins += score;
     if (score > 0){
+        coinsAnimating = true;
+        resetBtn.disabled = true;
+        resetBtn.style.opacity = 0.5;
+        resetBtn.style.cursor = 'not-allowed';
         animateCoins(oldCoins, coins);
     }
 };
@@ -172,10 +190,19 @@ function animateCoins(startValue, endValue){
 
         if(currentCoin >= endValue){
             clearInterval(coinInterval);
+            coinsAnimating = false;
+            resetBtn.disabled = false;
+            resetBtn.style.opacity = '1';
+            resetBtn.style.cursor = 'pointer';
         }
 }, 200);
 }
 function resetGame(){
+    if(coinsAnimating) {
+        return;
+    }
+
+
     score = 0;
     xVelocity = unitSize;
     yVelocity = 0;
@@ -190,7 +217,35 @@ function resetGame(){
 };
 function openShop(){
     shopModal.style.display = 'flex';
+    displayColorOptions();
 }
 function closeShop(){
     shopModal.style.display = 'none';
+}
+function displayColorOptions(){
+    const colorOptionsContainer = document.querySelector('#colorOptions');
+    colorOptionsContainer.innerHTML = '';
+
+    snakeColors.forEach((colorOption, index) => {
+        const colorBtn = document.createElement('button');
+        colorBtn.className = 'colorOptionBtn';
+
+        if(colorOption.owned){
+            colorBtn.textContent = `${colorOption.name} - Owned`;
+            colorBtn.style.backgroundColor = colorOption.color;
+        }
+        else {
+            colorBtn.textContent = `${colorOption.name} - ${colorOption.price} coins`;
+            colorBtn.style.backgroundColor = colorOption.color;
+            colorBtn.style.opacity = '0.55'; 
+        }
+
+        colorBtn.addEventListener('click', () => {
+            selectColor(index);
+        });
+
+        colorOptionsContainer.appendChild(colorBtn);
+
+    });
+
 }
