@@ -56,3 +56,58 @@ border: 3px solid;
 #shopBtn:hover{
     background-color: lightgray;
 }
+
+
+#shopModal{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(169, 169, 169, 0.4);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#shopContent{
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    border: 4px solid black;
+    max-width: 500px; 
+    max-height: 80%;
+    overflow-y: auto;
+}
+
+#shopTitle{
+    font-family: 'Comic Sans MS', sans-serif;
+    margin-top: 0;
+    text-align: center;
+}
+
+#shopSectionTitle{
+    font-family: 'Comic Sans MS', sans-serif;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+#closeShopBtn{
+    font-family: 'Comic Sans Ms', sans-serif;
+    font-size: 18px;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: white;
+    display: block;
+    border: 3px solid black;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: white;
+    display: block;
+    margin: 20px auto 0 auto;
+}
+
+#closeShopBtn:hover{
+    background-color: lightgray;
+}

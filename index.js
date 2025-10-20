@@ -7,9 +7,12 @@ const gameHeight = gameBoard.height;
 const boardBackground = 'green';
 const snakeColor = 'lightpink';
 const snakeBorder = 'purple';
-const foodColor = 'cyan';
+const foodColor = 'brown';
 const unitSize = 25;
 const coinText = document.querySelector('#coinText');
+const shopBtn = document.querySelector('#shopBtn');
+const shopModal = document.querySelector('#shopModal');
+const closeShopBtn = document.querySelector('#closeShopBtn');
 let running = false;
 let xVelocity = unitSize;
 let yVelocity = 0;
@@ -27,6 +30,8 @@ let snake = [
 
 window.addEventListener("keydown", changeDirection);
 resetBtn.addEventListener("click", resetGame)
+shopBtn.addEventListener("click", openShop);
+closeShopBtn.addEventListener("click", closeShop);
 
 gameStart();
 
@@ -183,3 +188,9 @@ function resetGame(){
     ];
     gameStart();
 };
+function openShop(){
+    shopModal.style.display = 'flex';
+}
+function closeShop(){
+    shopModal.style.display = 'none';
+}
