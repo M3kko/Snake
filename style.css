@@ -4,6 +4,49 @@ button {
 
 #gameContainer{
     text-align: center;
+    position: relative;
+}
+
+#controlsDisplay {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: white;
+    border: 3px solid black;
+    border-radius: 15px;
+    padding: 15px 20px;
+    font-family: "Comic Sans MS", sans-serif;
+    text-align: left;
+    z-index: 100;
+}
+
+#controlsDisplay h3 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    text-align: center;
+    border-bottom: 2px solid black;
+    padding-bottom: 5px;
+}
+
+.control-item {
+    display: flex;
+    align-items: center;
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+.control-item .key {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background-color: #f0f0f0;
+    border: 2px solid black;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 30px;
+    font-weight: bold;
+    margin-right: 10px;
+    font-size: 18px;
 }
 
 #gameBoard{
@@ -113,25 +156,58 @@ border: 3px solid;
 }
 
 #colorOptions{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
     margin-bottom: 20px;
 }
 
-.colorOptionBtn{
-    font-family: 'Comic Sans MS', sans-serif;
-    font-size: 16px;
-    padding: 15px 20px; 
-    border: 2px solid black;
+.colorCard{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    border: 3px solid black;
     border-radius: 10px;
+    background-color: white; 
     cursor: pointer;
-    font-weight: bold;
-    color: white;
-    text-shadow: 1px 1px 2px black;
-    transition: transform 0.1s;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
-#colorOptionBtn:hover{
-    transform: scale(1.05);
+.colorCard:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.colorPreview{
+    width: 80px;
+    height: 80px;
+    border: 3px solid black;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    color: white;
+    text-shadow: 2px 2px 4px black;
+}
+
+.colorPreview.owned{
+    border-color: gold;
+    border-width: 4px;
+}
+
+.colorName{
+    font-family: 'Comic Sans MS', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.colorPrice{
+    font-family: 'Comic Sans MS', sans-serif;
+    font-size: 14px;
+    color: #666;
 }

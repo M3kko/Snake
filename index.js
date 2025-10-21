@@ -22,7 +22,7 @@ const snakeColors = [
     {name: 'navy blue', color: 'navy', price: 10, owned: false},
     {name: 'white', color: 'white', price: 15, owned: false},
     {name: 'black', color: 'black', price: 15, owned: false},
-    {name: 'ghost', color: 'rgba(255,255,255,0.5)', price: 50, owned: false},
+    {name: 'ghost', color: "rgba(200, 200, 200, 0.7)", price: 50, owned: false},
 ]
 let running = false;
 let xVelocity = unitSize;
@@ -59,6 +59,12 @@ function gameStart(){
 };
 function nextTick(){
     if(running){
+
+        let gameSpeed = 75;
+        if(currentSnakecolor.name === "ghost"){
+            gameSpeed = 75 / 1.2;  
+        }
+
         setTimeout(()=>{
             clearBoard();
             drawFood();
@@ -104,7 +110,7 @@ function moveSnake(){
     }
     };
 function drawSnake(){
-    ctx.fillStyle = snakeColor;
+    ctx.fillStyle = currentSnakecolor.color; 
     ctx.strokeStyle = snakeBorder;
     snake.forEach(snakepart => {
         ctx.fillRect(snakepart.x, snakepart.y, unitSize, unitSize);
@@ -157,11 +163,12 @@ function checkGameOver(){
             running = false;
             break;
     }
-    for(let i = 1; i < snake.length; i+=1){
-        if(snake[i].x == snake[0].x && snake[i].y == snake[0].y){
-            running = false;
+    if(currentSnakecolor.name !== "ghost"){
+        for(let i = 1; i < snake.length; i+=1){
+            if(snake[i].x == snake[0].x && snake[i].y == snake[0].y){
+                running = false;
+            }
         }
-
     }
 };
 function displayGameOver(){
@@ -224,28 +231,69 @@ function closeShop(){
 }
 function displayColorOptions(){
     const colorOptionsContainer = document.querySelector('#colorOptions');
-    colorOptionsContainer.innerHTML = '';
-
+    colorOptionsContainer.innerHTML = ''; 
+    
     snakeColors.forEach((colorOption, index) => {
-        const colorBtn = document.createElement('button');
-        colorBtn.className = 'colorOptionBtn';
-
-        if(colorOption.owned){
-            colorBtn.textContent = `${colorOption.name} - Owned`;
-            colorBtn.style.backgroundColor = colorOption.color;
+        const colorCard = document.createElement('div');
+        colorCard.className = 'colorCard';
+        const colorPreview = document.createElement('div');
+        colorPreview.className = 'colorPreview';
+        colorPreview.style.backgroundColor = colorOption.color;
+        
+        if(colorOption === currentSnakecolor){
+            colorPreview.innerHTML = '✓';
+            colorPreview.classList.add('selected');
         }
-        else {
-            colorBtn.textContent = `${colorOption.name} - ${colorOption.price} coins`;
-            colorBtn.style.backgroundColor = colorOption.color;
-            colorBtn.style.opacity = '0.55'; 
+        else if(colorOption.owned){
+            colorPreview.classList.add('owned');
         }
-
-        colorBtn.addEventListener('click', () => {
+        
+        const colorName = document.createElement('div');
+        colorName.className = 'colorName';
+        colorName.textContent = colorOption.name;
+        
+        const colorPrice = document.createElement('div');
+        colorPrice.className = 'colorPrice';
+        if(colorOption === currentSnakecolor){
+            colorPrice.textContent = 'Equipped';
+        }
+        else if(colorOption.owned){
+            colorPrice.textContent = 'Owned';
+        }
+        else{
+            colorPrice.textContent = `${colorOption.price} coins`;
+        }
+        
+        colorCard.addEventListener('click', () => {
             selectColor(index);
         });
-
-        colorOptionsContainer.appendChild(colorBtn);
-
+        
+        colorCard.appendChild(colorPreview);
+        colorCard.appendChild(colorName);
+        colorCard.appendChild(colorPrice);
+        colorOptionsContainer.appendChild(colorCard);
     });
+}
+function selectColor(colorIndex){
+    const selectedColor = snakeColors[colorIndex];
 
+    if(selectedColor.owned){
+        currentSnakecolor = selectedColor;
+        alert(`Equipped ${selectedColor.name}!`);
+        displayColorOptions();  
+    }
+    else{
+        if (coins >= selectedColor.price) {
+            coins -= selectedColor.price;
+            selectedColor.owned = true;
+            currentSnakecolor = selectedColor;
+            coinText.textContent = coins;
+            alert(`Purchased ${selectedColor.name} for ${selectedColor.price} coins!`);
+            displayColorOptions();
+        }
+        else{
+            const coinsNeeded = selectedColor.price - coins;
+            alert(`Not enough coins! You need ${coinsNeeded} more coins.`);
+        }
+    }
 }
